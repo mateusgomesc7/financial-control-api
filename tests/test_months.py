@@ -1,7 +1,5 @@
 from http import HTTPStatus
 
-from app.schemas.members import MemberPublic
-
 
 def test_create_month(client, user):
     date = "2024-12-01T00:00:01"

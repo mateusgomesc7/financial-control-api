@@ -3,7 +3,7 @@
 from datetime import datetime
 
 from sqlalchemy import DECIMAL, ForeignKey, String
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.sql.functions import now
 
 from app.models.base import table_registry
@@ -26,8 +26,4 @@ class Income:
     )
     updated_at: Mapped[datetime] = mapped_column(
         init=False, server_default=now(), onupdate=now()
-    )
-
-    user_incomes: Mapped[list["UserIncome"]] = relationship(
-        "UserIncome", back_populates="income"
     )

@@ -27,12 +27,6 @@ class User:
         init=False, server_default=now(), onupdate=now()
     )
 
-    user_incomes: Mapped[list["UserIncome"]] = relationship(
-        "UserIncome",
-        back_populates="user",
-        cascade="all, delete-orphan",
-        init=False,
-    )
     user_essential_expenses: Mapped[list["UserEssentialExpense"]] = (
         relationship(
             "UserEssentialExpense",
