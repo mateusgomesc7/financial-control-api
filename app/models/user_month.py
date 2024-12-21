@@ -18,8 +18,3 @@ class UserMonth:
     id_month_fk: Mapped[int] = mapped_column(
         ForeignKey("month.id"), primary_key=True
     )
-
-    user: Mapped["User"] = relationship("User", back_populates="user_months")
-    month: Mapped["Month"] = relationship(
-        "Month", back_populates="user_months"
-    )

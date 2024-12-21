@@ -28,6 +28,3 @@ class UserEssentialExpense:
     essential_expense: Mapped["EssentialExpense"] = relationship(
         "EssentialExpense", back_populates="user_essential_expenses"
     )
-    month: Mapped["Month"] = relationship(
-        "Month", back_populates="user_essential_expenses"
-    )

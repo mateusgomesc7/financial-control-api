@@ -15,19 +15,4 @@ class Month:
     __tablename__ = "month"
 
     id: Mapped[int] = mapped_column(init=False, primary_key=True)
-    created_at: Mapped[datetime] = mapped_column(
-        init=False, server_default=now()
-    )
-
-    user_months: Mapped[list["UserMonth"]] = relationship(
-        "UserMonth", back_populates="month"
-    )
-    user_incomes: Mapped[list["UserIncome"]] = relationship(
-        "UserIncome", back_populates="month"
-    )
-    user_essential_expenses: Mapped[list["UserEssentialExpense"]] = (
-        relationship("UserEssentialExpense", back_populates="month")
-    )
-    user_non_essential_expenses: Mapped[list["UserNonEssentialExpense"]] = (
-        relationship("UserNonEssentialExpense", back_populates="month")
-    )
+    created_at: Mapped[datetime] = mapped_column()

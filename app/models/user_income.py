@@ -25,6 +25,3 @@ class UserIncome:
     income: Mapped["Income"] = relationship(
         "Income", back_populates="user_incomes"
     )
-    month: Mapped["Month"] = relationship(
-        "Month", back_populates="user_incomes"
-    )

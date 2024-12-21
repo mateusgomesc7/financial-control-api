@@ -49,9 +49,3 @@ class User:
             init=False,
         )
     )
-    user_months: Mapped[list["UserMonth"]] = relationship(
-        "UserMonth",
-        back_populates="user",
-        cascade="all, delete-orphan",
-        init=False,
-    )

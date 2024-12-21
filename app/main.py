@@ -2,7 +2,7 @@
 
 from fastapi import FastAPI
 
-from app.routers import auth, members, users
+from app.routers import auth, members, months, users
 from app.schemas.utils import Message
 
 app = FastAPI()
@@ -10,6 +10,7 @@ app = FastAPI()
 app.include_router(users.router)
 app.include_router(auth.router)
 app.include_router(members.router)
+app.include_router(months.router)
 
 
 @app.get("/", response_model=Message)
