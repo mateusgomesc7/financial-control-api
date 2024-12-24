@@ -69,6 +69,7 @@ def get_incomes(
     incomes = session.execute(
         select(Income)
         .filter(Income.id_user_fk == current_user.id)
+        .order_by(Income.updated_at.desc())
         .limit(limit)
         .offset(offset)
     ).scalars()
