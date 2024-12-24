@@ -55,12 +55,21 @@ def read_members(
     return {"members": members}
 
 
+@router.get("/list", response_model=MemberList)
+def read_members_list(session: T_Session, current_user: T_CurrentUser):
+    members = session.scalars(
+        select(Member).where(Member.id_user_fk == current_user.id)
+    )
+
+    return {"members": members}
+
+
 @router.put("/{member_id}", response_model=MemberPublic)
 def update_member(
     member_id: int,
     member: MemberSchema,
     session: T_Session,
-    current_user: User = Depends(get_current_user),
+    current_user: T_CurrentUser,
 ):
     db_member = session.get(Member, member_id)
 
@@ -87,9 +96,7 @@ def update_member(
 
 @router.delete("/{member_id}", response_model=Message)
 def delete_member(
-    member_id: int,
-    session: T_Session,
-    current_user: User = Depends(get_current_user),
+    member_id: int, session: T_Session, current_user: T_CurrentUser
 ):
     db_member = session.get(Member, member_id)
 

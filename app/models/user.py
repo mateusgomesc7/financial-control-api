@@ -26,20 +26,3 @@ class User:
     updated_at: Mapped[datetime] = mapped_column(
         init=False, server_default=now(), onupdate=now()
     )
-
-    user_essential_expenses: Mapped[list["UserEssentialExpense"]] = (
-        relationship(
-            "UserEssentialExpense",
-            back_populates="user",
-            cascade="all, delete-orphan",
-            init=False,
-        )
-    )
-    user_non_essential_expenses: Mapped[list["UserNonEssentialExpense"]] = (
-        relationship(
-            "UserNonEssentialExpense",
-            back_populates="user",
-            cascade="all, delete-orphan",
-            init=False,
-        )
-    )

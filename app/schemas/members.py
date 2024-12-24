@@ -9,7 +9,6 @@ class MemberSchema(BaseModel):
 class MemberPublic(BaseModel):
     id: int
     name: str
-    id_user_fk: int
 
     model_config = ConfigDict(from_attributes=True)
 
