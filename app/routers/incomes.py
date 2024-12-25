@@ -1,17 +1,18 @@
 """Income router."""
 
 from http import HTTPStatus
+from math import ceil
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy import select
-from sqlalchemy.orm import Session
+from sqlalchemy import func, select
+from sqlalchemy.orm import Session, joinedload, selectinload
 
 from app.database import get_session
 from app.models.income import Income
 from app.models.member import Member
 from app.models.user import User
-from app.schemas.incomes import IncomeList, IncomePublic, IncomeSchema
+from app.schemas.incomes import IncomePaginated, IncomePublic, IncomeSchema
 from app.schemas.utils import Message
 from app.security import get_current_user
 
@@ -49,35 +50,62 @@ def create_income(
         amount=income.amount,
         id_user_fk=current_user.id,
         id_member_fk=income.id_member_fk,
+        member=member,
     )
 
     session.add(db_income)
     session.commit()
     session.refresh(db_income)
 
+    db_income.member = member
+
     return db_income
 
 
-@router.get("/", response_model=IncomeList)
-def get_incomes(
+@router.get("/", response_model=IncomePaginated)
+def get_incomes_paginated(
     session: T_Session,
     current_user: T_CurrentUser,
-    limit: int = 10,
-    offset: int = 0,
+    page: int = 1,
+    per_page: int = 10,
 ):
     """Get all incomes."""
-    incomes = session.execute(
-        select(Income)
-        .filter(Income.id_user_fk == current_user.id)
-        .order_by(Income.updated_at.desc())
-        .limit(limit)
-        .offset(offset)
-    ).scalars()
+    total = session.scalar(
+        select(func.count(Income.id)).filter(
+            Income.id_user_fk == current_user.id
+        )
+    )
 
-    return {"incomes": incomes}
+    offset = (page - 1) * per_page
+
+    items = (
+        session.execute(
+            select(Income)
+            .options(selectinload(Income.member))
+            .filter(Income.id_user_fk == current_user.id)
+            .order_by(Income.updated_at.desc())
+            .limit(per_page)
+            .offset(offset)
+        )
+        .scalars()
+        .all()
+    )
+
+    total_pages = ceil(total / per_page) if total > 0 else 1
+
+    return {
+        "items": items,
+        "pagination": {
+            "count": len(items),
+            "page": page,
+            "per_page": per_page,
+            "total": total,
+            "total_pages": total_pages,
+        },
+    }
 
 
-@router.get("/{income_id}", response_model=IncomePublic)
+@router.get("/{income_id}", response_model=IncomeSchema)
 def get_income(
     income_id: int,
     session: T_Session,
@@ -107,7 +135,11 @@ def update_income(
     current_user: T_CurrentUser,
 ):
     """Update an income."""
-    db_income = session.get(Income, income_id)
+    db_income = session.execute(
+        select(Income)
+        .where(Income.id == income_id)
+        .options(joinedload(Income.member))
+    ).scalar()
 
     if not db_income:
         raise HTTPException(
