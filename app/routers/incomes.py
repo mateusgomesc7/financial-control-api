@@ -68,21 +68,21 @@ def get_incomes_paginated(
     current_user: T_CurrentUser,
     page: int = 1,
     per_page: int = 10,
+    name: str = None,
 ):
     """Get all incomes."""
-    total = session.scalar(
-        select(func.count(Income.id)).filter(
-            Income.id_user_fk == current_user.id
-        )
-    )
+    query = select(Income).filter(Income.id_user_fk == current_user.id)
+
+    if name:
+        query = query.filter(Income.name.ilike(f"%{name}%"))
+
+    total = session.scalar(select(func.count()).select_from(query.subquery()))
 
     offset = (page - 1) * per_page
 
     items = (
         session.execute(
-            select(Income)
-            .options(selectinload(Income.member))
-            .filter(Income.id_user_fk == current_user.id)
+            query.options(selectinload(Income.member))
             .order_by(Income.updated_at.desc())
             .limit(per_page)
             .offset(offset)
