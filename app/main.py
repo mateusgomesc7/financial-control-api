@@ -8,6 +8,7 @@ from app.routers import (
     incomes,
     members,
     months,
+    non_essential_expenses,
     users,
     essential_expenses,
 )
@@ -28,6 +29,7 @@ app.include_router(members.router)
 app.include_router(months.router)
 app.include_router(incomes.router)
 app.include_router(essential_expenses.router)
+app.include_router(non_essential_expenses.router)
 
 
 @app.get("/", response_model=Message)

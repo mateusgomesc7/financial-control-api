@@ -34,7 +34,7 @@ def create_essential_expense(
     session: T_Session,
     current_user: T_CurrentUser,
 ):
-    """Create a new essential_expense."""
+    """Create a new essential expense."""
     member = session.execute(
         select(Member).filter(Member.id == essential_expense.id_member_fk)
     ).scalar()
@@ -119,7 +119,7 @@ def get_essential_expense(
     session: T_Session,
     current_user: T_CurrentUser,
 ):
-    """Get a single essential_expense."""
+    """Get a single essential expense."""
     essential_expense = session.execute(
         select(EssentialExpense)
         .filter(EssentialExpense.id == essential_expense_id)
@@ -142,7 +142,7 @@ def update_essential_expense(
     session: T_Session,
     current_user: T_CurrentUser,
 ):
-    """Update an essential_expense."""
+    """Update an essential expense."""
     db_essential_expense = session.execute(
         select(EssentialExpense)
         .where(EssentialExpense.id == essential_expense_id)
