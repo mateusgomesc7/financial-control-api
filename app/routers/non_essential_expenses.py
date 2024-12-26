@@ -9,8 +9,8 @@ from sqlalchemy import func, select
 from sqlalchemy.orm import Session, joinedload, selectinload
 
 from app.database import get_session
-from app.models.non_essential_expense import NonEssentialExpense
 from app.models.member import Member
+from app.models.non_essential_expense import NonEssentialExpense
 from app.models.user import User
 from app.schemas.non_essential_expenses import (
     NonEssentialExpensePaginated,

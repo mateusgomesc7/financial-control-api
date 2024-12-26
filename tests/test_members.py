@@ -3,19 +3,17 @@ from http import HTTPStatus
 from app.schemas.members import MemberPublic
 
 
-def test_create_member(client, user, token):
+def test_create_member(client, token):
     response = client.post(
         "/members/",
         headers={"Authorization": f"Bearer {token}"},
         json={
             "name": "test",
-            "id_user_fk": user.id,
         },
     )
     assert response.status_code == HTTPStatus.CREATED
     assert response.json() == {
         "name": "test",
-        "id_user_fk": user.id,
         "id": 1,
     }
 
@@ -35,20 +33,18 @@ def test_read_members_with_member(client, member):
     assert response.json() == {"members": [member_schema]}
 
 
-def test_update_member(client, member, other_user, token):
+def test_update_member(client, member, token):
     response = client.put(
         f"/members/{member.id}",
         headers={"Authorization": f"Bearer {token}"},
         json={
             "name": "test",
-            "id_user_fk": other_user.id,
         },
     )
 
     assert response.status_code == HTTPStatus.OK
     assert response.json() == {
         "name": "test",
-        "id_user_fk": other_user.id,
         "id": member.id,
     }
 

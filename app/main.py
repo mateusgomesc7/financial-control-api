@@ -1,16 +1,16 @@
 """FastAPI app."""
 
-from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.routers import (
     auth,
+    essential_expenses,
     incomes,
     members,
     months,
     non_essential_expenses,
     users,
-    essential_expenses,
 )
 from app.schemas.utils import Message
 

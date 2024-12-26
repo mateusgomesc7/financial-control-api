@@ -26,15 +26,9 @@ def create_member(
     session: T_Session,
     current_user: T_CurrentUser,
 ):
-    if current_user.id != member.id_user_fk:
-        raise HTTPException(
-            status_code=HTTPStatus.FORBIDDEN,
-            detail="You don't have permission to create a member for another user",
-        )
-
     db_member = Member(
         name=member.name,
-        id_user_fk=member.id_user_fk,
+        id_user_fk=current_user.id,
     )
 
     session.add(db_member)
@@ -86,7 +80,7 @@ def update_member(
         )
 
     db_member.name = member.name
-    db_member.id_user_fk = member.id_user_fk
+    db_member.id_user_fk = current_user.id
 
     session.commit()
     session.refresh(db_member)
