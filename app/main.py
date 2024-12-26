@@ -3,7 +3,14 @@
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI
 
-from app.routers import auth, incomes, members, months, users
+from app.routers import (
+    auth,
+    incomes,
+    members,
+    months,
+    users,
+    essential_expenses,
+)
 from app.schemas.utils import Message
 
 app = FastAPI()
@@ -20,6 +27,7 @@ app.include_router(auth.router)
 app.include_router(members.router)
 app.include_router(months.router)
 app.include_router(incomes.router)
+app.include_router(essential_expenses.router)
 
 
 @app.get("/", response_model=Message)
