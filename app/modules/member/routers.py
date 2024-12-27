@@ -10,9 +10,9 @@ from sqlalchemy.orm import Session
 from app.database import get_session
 from app.models.member import Member
 from app.models.user import User
-from app.schemas.members import MemberList, MemberPublic, MemberSchema
-from app.schemas.utils import Message
+from app.modules.member.schemas import MemberList, MemberPublic, MemberSchema
 from app.security import get_current_user
+from app.shared.schemas.utils import Message
 
 router = APIRouter(prefix="/members", tags=["members"])
 

@@ -3,7 +3,7 @@ from typing import Optional
 
 from pydantic import BaseModel, ConfigDict
 
-from app.schemas.members import MemberPublic
+from app.modules.member.schemas import MemberPublic
 
 
 class Pagination(BaseModel):

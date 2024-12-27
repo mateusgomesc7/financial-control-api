@@ -10,7 +10,7 @@ from app.database import get_session
 from app.models.month import Month
 from app.models.user import User
 from app.models.user_month import UserMonth
-from app.schemas.months import MonthPublic, MonthSchema
+from app.modules.month.schemas import MonthPublic, MonthSchema
 
 router = APIRouter(prefix="/months", tags=["months"])
 

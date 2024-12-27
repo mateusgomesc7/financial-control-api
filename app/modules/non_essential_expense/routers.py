@@ -12,13 +12,13 @@ from app.database import get_session
 from app.models.member import Member
 from app.models.non_essential_expense import NonEssentialExpense
 from app.models.user import User
-from app.schemas.non_essential_expenses import (
+from app.modules.non_essential_expense.schemas import (
     NonEssentialExpensePaginated,
     NonEssentialExpensePublic,
     NonEssentialExpenseSchema,
 )
-from app.schemas.utils import Message
 from app.security import get_current_user
+from app.shared.schemas.utils import Message
 
 router = APIRouter(
     prefix="/non-essential-expenses", tags=["non essential expenses"]

@@ -3,7 +3,7 @@ from typing import Optional
 
 from pydantic import BaseModel, ConfigDict
 
-from app.schemas.members import MemberPublic
+from app.modules.member.schemas import MemberPublic
 
 
 class Pagination(BaseModel):
@@ -14,13 +14,13 @@ class Pagination(BaseModel):
     total_pages: int
 
 
-class NonEssentialExpenseSchema(BaseModel):
+class EssentialExpenseSchema(BaseModel):
     name: str
     expected: float
     id_member_fk: int
 
 
-class NonEssentialExpensePublic(BaseModel):
+class EssentialExpensePublic(BaseModel):
     id: int
     name: str
     expected: float
@@ -32,10 +32,10 @@ class NonEssentialExpensePublic(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 
-class NonEssentialExpensePaginated(BaseModel):
-    items: list[NonEssentialExpensePublic]
+class EssentialExpensePaginated(BaseModel):
+    items: list[EssentialExpensePublic]
     pagination: Pagination
 
 
-class NonEssentialExpenseList(BaseModel):
-    non_essential_expenses: list[NonEssentialExpensePublic]
+class EssentialExpenseList(BaseModel):
+    essential_expenses: list[EssentialExpensePublic]

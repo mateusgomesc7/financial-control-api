@@ -12,9 +12,13 @@ from app.database import get_session
 from app.models.income import Income
 from app.models.member import Member
 from app.models.user import User
-from app.schemas.incomes import IncomePaginated, IncomePublic, IncomeSchema
-from app.schemas.utils import Message
+from app.modules.income.schemas import (
+    IncomePaginated,
+    IncomePublic,
+    IncomeSchema,
+)
 from app.security import get_current_user
+from app.shared.schemas.utils import Message
 
 router = APIRouter(prefix="/incomes", tags=["incomes"])
 

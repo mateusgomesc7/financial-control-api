@@ -3,16 +3,18 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.routers import (
-    auth,
-    essential_expenses,
-    incomes,
-    members,
-    months,
-    non_essential_expenses,
-    users,
+from app.modules.auth.routers import router as auth_router
+from app.modules.essential_expense.routers import (
+    router as essential_expense_router,
 )
-from app.schemas.utils import Message
+from app.modules.income.routers import router as income_router
+from app.modules.member.routers import router as member_router
+from app.modules.month.routers import router as month_router
+from app.modules.non_essential_expense.routers import (
+    router as non_essential_expense_router,
+)
+from app.modules.user.routers import router as user_router
+from app.shared.schemas.utils import Message
 
 app = FastAPI()
 
@@ -23,13 +25,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(users.router)
-app.include_router(auth.router)
-app.include_router(members.router)
-app.include_router(months.router)
-app.include_router(incomes.router)
-app.include_router(essential_expenses.router)
-app.include_router(non_essential_expenses.router)
+app.include_router(user_router)
+app.include_router(auth_router)
+app.include_router(member_router)
+app.include_router(month_router)
+app.include_router(income_router)
+app.include_router(essential_expense_router)
+app.include_router(non_essential_expense_router)
 
 
 @app.get("/", response_model=Message)

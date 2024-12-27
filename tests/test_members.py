@@ -1,6 +1,6 @@
 from http import HTTPStatus
 
-from app.schemas.members import MemberPublic
+from app.modules.member.schemas import MemberPublic
 
 
 def test_create_member(client, token):

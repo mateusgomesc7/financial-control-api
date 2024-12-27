@@ -12,13 +12,13 @@ from app.database import get_session
 from app.models.essential_expense import EssentialExpense
 from app.models.member import Member
 from app.models.user import User
-from app.schemas.essential_expenses import (
+from app.modules.essential_expense.schemas import (
     EssentialExpensePaginated,
     EssentialExpensePublic,
     EssentialExpenseSchema,
 )
-from app.schemas.utils import Message
 from app.security import get_current_user
+from app.shared.schemas.utils import Message
 
 router = APIRouter(prefix="/essential-expenses", tags=["essential expenses"])
 
