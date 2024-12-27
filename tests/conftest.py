@@ -11,9 +11,12 @@ from testcontainers.postgres import PostgresContainer
 from app.database import get_session
 from app.main import app
 from app.models.base import table_registry
+from app.models.income import Income
 from app.models.member import Member
 from app.models.user import User
 from app.security import get_password_hash
+
+# Factories ========================================
 
 
 class UserFactory(factory.Factory):
@@ -32,6 +35,20 @@ class MemberFactory(factory.Factory):
 
     name = factory.Sequence(lambda n: f"Test Member {n}")
     id_user_fk = 1
+
+
+class IncomeFactory(factory.Factory):
+    class Meta:
+        model = Income
+
+    name = factory.Sequence(lambda n: f"Test Income {n}")
+    amount = 100.0
+    id_user_fk = 1
+    id_member_fk = 1
+    member = factory.SubFactory(MemberFactory)
+
+
+# Fixtures ========================================
 
 
 @pytest.fixture(scope="session")
@@ -88,6 +105,9 @@ def mock_db_time():
     return _mock_db_time
 
 
+# Fixtures for models ========================================
+
+
 @pytest.fixture
 def user(session):
     pwd = "testtest"
@@ -139,3 +159,16 @@ def other_member(session, other_user):
     session.refresh(member)
 
     return member
+
+
+@pytest.fixture
+def income(session, user, member, mock_db_time):
+    with mock_db_time(model=Income, time=datetime(2024, 1, 1)):
+        income = IncomeFactory(
+            id_user_fk=user.id, id_member_fk=member.id, member=member
+        )
+        session.add(income)
+        session.commit()
+        session.refresh(income)
+
+        return income

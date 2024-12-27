@@ -31,4 +31,4 @@ class Income:
         init=False, server_default=now(), onupdate=now()
     )
 
-    member: Mapped["Member"] = relationship("Member", lazy="noload")
+    member: Mapped["Member"] = relationship("Member", lazy="joined")
